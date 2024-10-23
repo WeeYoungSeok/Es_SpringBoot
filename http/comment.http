@@ -6,9 +6,10 @@ Content-Type: application/json
   "body" : "안녕1"
 }
 
-### 게시글 단건 조회 API
+### 댓글 단건 조회 API
 @id=1
 GET localhost:8080/api/comments/{{id}}
+
 
 ### 댓글 수정
 PUT http://localhost:8080/api/comments/1
@@ -17,3 +18,6 @@ Content-Type: application/json
 {
   "body" : "수정 내용"
 }
+
+### 댓글 삭제
+DELETE http://localhost:8080/api/comments/1

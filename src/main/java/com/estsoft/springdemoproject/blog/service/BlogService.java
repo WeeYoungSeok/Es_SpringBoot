@@ -77,4 +77,13 @@ public class BlogService {
         comment.update(request.getBody());
         return commentRepository.save(comment);
     }
+
+    // 댓글 삭제
+    public void delete(Long commentId) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("not found id: " + commentId)
+        );
+
+        commentRepository.delete(comment);
+    }
 }

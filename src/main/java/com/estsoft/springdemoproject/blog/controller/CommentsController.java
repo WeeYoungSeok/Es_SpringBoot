@@ -39,4 +39,10 @@ public class CommentsController {
         return ResponseEntity.ok(comment.convert());
     }
 
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity delete(@PathVariable Long commentId) {
+        blogService.delete(commentId);   // Exception (5xx server error) -> 4xx Status Code
+        return ResponseEntity.ok().build();
+    }
+
 }
