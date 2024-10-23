@@ -39,6 +39,14 @@ public class Comment {
     }
 
     public CommentResponse convert() {
-        return new CommentResponse(id, body, createdAt, article.convert());
+        return new CommentResponse(id, article.getId(), body, createdAt, article.convert());
+    }
+
+    public CommentResponse convertToCommentFindById() {
+        return new CommentResponse(id, article.getId(), body, createdAt);
+    }
+
+    public void update(String body) {
+        this.body = body;
     }
 }

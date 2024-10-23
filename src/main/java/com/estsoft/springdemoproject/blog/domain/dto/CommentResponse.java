@@ -15,7 +15,8 @@ import java.time.LocalDateTime;
 @Schema(description = "댓글 결과")
 public class CommentResponse {
     @Schema(description = "댓글 ID", type = "Long")
-    private Long id;
+    private Long commentId;
+    private Long articleId;
 
     @Schema(description = "댓글 내용", type = "String")
     private String body;
@@ -25,4 +26,11 @@ public class CommentResponse {
 
     @Schema(description = "게시물", type = "ArticleResponse")
     private ArticleResponse article;
+
+    public CommentResponse(Long commentId, Long articleId, String body, LocalDateTime createdAt) {
+        this.commentId = commentId;
+        this.articleId = articleId;
+        this.body = body;
+        this.createdAt = createdAt;
+    }
 }

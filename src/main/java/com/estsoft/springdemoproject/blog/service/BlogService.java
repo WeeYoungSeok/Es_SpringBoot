@@ -60,4 +60,21 @@ public class BlogService {
                 .build();
         return commentRepository.save(comment);
     }
+
+    // 댓글 조회
+    public Comment findCommentById(Long commentId) {
+        return commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("not found id: " + commentId)
+        );
+    }
+
+    // 댓글 수정
+    public Comment update(Long commentId, AddCommentRequest request) {
+        Comment comment = commentRepository.findById(commentId).orElseThrow(
+                () -> new IllegalArgumentException("not found id: " + commentId)
+        );
+
+        comment.update(request.getBody());
+        return commentRepository.save(comment);
+    }
 }
