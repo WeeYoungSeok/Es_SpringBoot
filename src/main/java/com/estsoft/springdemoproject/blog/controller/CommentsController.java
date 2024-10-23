@@ -44,5 +44,4 @@ public class CommentsController {
         blogService.delete(commentId);   // Exception (5xx server error) -> 4xx Status Code
         return ResponseEntity.ok().build();
     }
-
 }

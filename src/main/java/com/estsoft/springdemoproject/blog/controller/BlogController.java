@@ -80,4 +80,12 @@ public class BlogController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(service.saveComment(articleId, request).convert());
     }
+
+    // 게시글과 댓글 같이 조회 API
+    @GetMapping("/articles/{articleId}/comments")
+    public ResponseEntity<ArticleResponse> findAllWithComments(@PathVariable Long articleId) {
+        ArticleResponse response = service.findBy(articleId).convertWithComments();
+
+        return ResponseEntity.ok(response);
+    }
 }

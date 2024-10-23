@@ -7,7 +7,7 @@ Content-Type: application/json
 }
 
 ### 댓글 단건 조회 API
-@id=1
+@id=2
 GET localhost:8080/api/comments/{{id}}
 
 
