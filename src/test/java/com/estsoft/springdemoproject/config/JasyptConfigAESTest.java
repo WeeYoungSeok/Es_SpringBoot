@@ -9,16 +9,15 @@ import org.junit.jupiter.api.Test;
 class JasyptConfigAESTest {
     @Test
     void stringEncryptor() {
-        String password = "admin1234";
+        String password = "password";
 
         System.out.println(jasyptEncoding(password));
     }
 
     public String jasyptEncoding(String value) {
-        String key = "jasypt_key";
         StandardPBEStringEncryptor pbeEnc = new StandardPBEStringEncryptor();
+        pbeEnc.setPassword("jasypt_key");
         pbeEnc.setAlgorithm("PBEWITHHMACSHA512ANDAES_256");
-        pbeEnc.setPassword(key);
         pbeEnc.setIvGenerator(new RandomIvGenerator());
         pbeEnc.setSaltGenerator(new RandomSaltGenerator());
         return pbeEnc.encrypt(value);

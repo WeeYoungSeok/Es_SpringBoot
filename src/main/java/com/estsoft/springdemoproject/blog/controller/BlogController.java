@@ -1,7 +1,9 @@
 package com.estsoft.springdemoproject.blog.controller;
 
-import com.estsoft.springdemoproject.blog.domain.dto.*;
+import com.estsoft.springdemoproject.blog.domain.dto.AddArticleRequest;
 import com.estsoft.springdemoproject.blog.domain.Article;
+import com.estsoft.springdemoproject.blog.domain.dto.ArticleResponse;
+import com.estsoft.springdemoproject.blog.domain.dto.UpdateArticleRequest;
 import com.estsoft.springdemoproject.blog.service.BlogService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -34,7 +36,7 @@ public class BlogController {
         Article article = service.saveArticle(request);
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(article.convert());
+                .body(new ArticleResponse(article));
     }
 
     @ApiResponses(value = {
@@ -45,7 +47,7 @@ public class BlogController {
     public ResponseEntity<List<ArticleResponse>> findAll() {
         // List<Article> -> List<ArticleResponse> 변환해서 응답으로 보내기
         List<ArticleResponse> list = service.findAll().stream()
-                .map(Article::convert)
+                .map(ArticleResponse::new)
                 .toList();
         return ResponseEntity.ok(list);
     }
@@ -56,7 +58,7 @@ public class BlogController {
         Article article = service.findBy(id);   // Exception (5xx server error) -> 4xx Status Code
 
         // Article -> ArticleResponse
-        return ResponseEntity.ok(article.convert());
+        return ResponseEntity.ok(new ArticleResponse(article));
     }
 
     @Parameter(name = "id", description = "블로그 글 ID", example = "1")
@@ -70,22 +72,6 @@ public class BlogController {
     public ResponseEntity<ArticleResponse> updateById(@PathVariable Long id,
                                                       @RequestBody UpdateArticleRequest request) {
         Article updatedArticle = service.update(id, request);
-        return ResponseEntity.ok(updatedArticle.convert());
-    }
-
-    // 댓글 정보 REST API
-    @PostMapping("/articles/{articleId}/comments")
-    public ResponseEntity<CommentResponse> writeComment(@PathVariable Long articleId,
-                                                        @RequestBody AddCommentRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(service.saveComment(articleId, request).convert());
-    }
-
-    // 게시글과 댓글 같이 조회 API
-    @GetMapping("/articles/{articleId}/comments")
-    public ResponseEntity<ArticleResponse> findAllWithComments(@PathVariable Long articleId) {
-        ArticleResponse response = service.findBy(articleId).convertWithComments();
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(new ArticleResponse(updatedArticle));
     }
 }

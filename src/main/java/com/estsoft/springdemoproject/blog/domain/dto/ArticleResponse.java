@@ -1,16 +1,14 @@
 package com.estsoft.springdemoproject.blog.domain.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.estsoft.springdemoproject.blog.domain.Article;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import static com.estsoft.springdemoproject.util.DateFormatUtil.formatter;
+
 
 @Getter
 @Setter
@@ -27,24 +25,15 @@ public class ArticleResponse {
     @Schema(description = "블로그 내용", type = "String")
     private String content;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime createdAt;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime updatedAt;
+    private String createdAt;
 
-    private List<CommentResponse> comments = new ArrayList<>();
+    private String updatedAt;
 
-    public ArticleResponse(Long id, String title, String content) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-    }
-
-    public ArticleResponse(Long id, String title, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+    public ArticleResponse(Article article) {
+        id = article.getId();
+        title = article.getTitle();
+        content = article.getContent();
+        createdAt = article.getCreatedAt() != null ? article.getCreatedAt().format(formatter) : "";
+        updatedAt = article.getUpdatedAt() != null ? article.getUpdatedAt().format(formatter) : "";
     }
 }

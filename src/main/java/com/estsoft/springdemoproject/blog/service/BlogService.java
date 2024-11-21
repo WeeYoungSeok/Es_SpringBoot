@@ -1,12 +1,9 @@
 package com.estsoft.springdemoproject.blog.service;
 
-import com.estsoft.springdemoproject.blog.domain.Comment;
 import com.estsoft.springdemoproject.blog.domain.dto.AddArticleRequest;
 import com.estsoft.springdemoproject.blog.domain.Article;
-import com.estsoft.springdemoproject.blog.domain.dto.AddCommentRequest;
 import com.estsoft.springdemoproject.blog.domain.dto.UpdateArticleRequest;
 import com.estsoft.springdemoproject.blog.repository.BlogRepository;
-import com.estsoft.springdemoproject.blog.repository.CommentRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,11 +12,9 @@ import java.util.List;
 @Service
 public class BlogService {
     private final BlogRepository repository;
-    private final CommentRepository commentRepository;
 
-    public BlogService(BlogRepository repository, CommentRepository commentRepository) {
+    public BlogService(BlogRepository repository) {
         this.repository = repository;
-        this.commentRepository = commentRepository;
     }
 
     // blog 게시글 저장
@@ -50,40 +45,4 @@ public class BlogService {
         return article;
     }
 
-    // 댓글 작성
-    public Comment saveComment(Long articleId, AddCommentRequest request) {
-        Article article = repository.findById(articleId)
-                .orElseThrow(() -> new IllegalArgumentException("not found id: " + articleId));
-        Comment comment = Comment.builder()
-                .body(request.getBody())
-                .article(article)
-                .build();
-        return commentRepository.save(comment);
-    }
-
-    // 댓글 조회
-    public Comment findCommentById(Long commentId) {
-        return commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("not found id: " + commentId)
-        );
-    }
-
-    // 댓글 수정
-    public Comment update(Long commentId, AddCommentRequest request) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("not found id: " + commentId)
-        );
-
-        comment.update(request.getBody());
-        return commentRepository.save(comment);
-    }
-
-    // 댓글 삭제
-    public void delete(Long commentId) {
-        Comment comment = commentRepository.findById(commentId).orElseThrow(
-                () -> new IllegalArgumentException("not found id: " + commentId)
-        );
-
-        commentRepository.delete(comment);
-    }
 }
