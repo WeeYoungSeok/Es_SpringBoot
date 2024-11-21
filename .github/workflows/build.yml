@@ -12,6 +12,7 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
+  workflow_dispatch:
 
 # 현재 스크립트에서 사용할 환경변수를 정의하여 사용
 env:
